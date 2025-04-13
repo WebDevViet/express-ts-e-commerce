@@ -10,7 +10,6 @@ import path from 'path'
 import { jsonify } from '~/core/middlewares/jsonify'
 import apiRoutes from '~/api/apiRoute'
 import mongoDB from '~/config/database/mongoDB' // Import mongoDB
-import initUploadFolder from './core/file/initUploadFolder'
 import { errorHandler, notFound } from './core/middlewares/errorHandlers'
 
 const debuggerMongoose = debug('node-js-mongoose:server') // Import debug
@@ -32,9 +31,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use('/images', express.static(path.resolve('uploads/images')))
-
-// Init upload folder
-initUploadFolder()
 
 // add res.jsonify to response object
 app.use(jsonify)
