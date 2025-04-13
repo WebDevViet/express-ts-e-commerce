@@ -3,9 +3,13 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import debug from 'debug'
 import express from 'express'
-import http from 'http'
 import logger from 'morgan'
 import path from 'path'
+import http from 'http'
+
+// * SSL
+// import https from 'https'
+// import fs from 'fs'
 
 import { jsonify } from '~/core/middlewares/jsonify'
 import apiRoutes from '~/api/apiRoute'
@@ -15,9 +19,11 @@ import { errorHandler, notFound } from './core/middlewares/errorHandlers'
 const debuggerMongoose = debug('node-js-mongoose:server') // Import debug
 const app = express()
 
+const urlClients = JSON.parse(process.env.URL_CLIENTS || '["http://localhost:3000"]')
+
 app.use(
   cors({
-    origin: process.env.URL_CLIENT, // Chỉ cho phép các domain được khai báo
+    origin: urlClients, // Chỉ cho phép các domain được khai báo
     credentials: true // Cho phép trình duyệt gửi cookie đến server
   })
 )
@@ -43,7 +49,15 @@ async function startServer() {
 
   app.set('port', port)
 
-  const server = http.createServer(app)
+  const server = http.createServer(
+    // * SSL
+    // const server = https.createServer(
+    // {
+    //   key: fs.readFileSync('./192.168.46.100-key.pem'),
+    //   cert: fs.readFileSync('./192.168.46.100.pem')
+    // },
+    app
+  )
 
   await mongoDB.connect()
 
