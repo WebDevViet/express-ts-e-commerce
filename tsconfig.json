@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    // Enable latest features
+    "lib": ["ESNext"],
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleDetection": "force",
+    "allowJs": false, // Không cho phép sử dụng file JavaScript, chỉ sử dụng TypeScript
+
+    // Bundler mode
+    "moduleResolution": "nodenext", // Sử dụng chế độ giải quyết module của Node.js
+    "allowImportingTsExtensions": true, // Cho phép nhập khẩu các file .ts
+    "verbatimModuleSyntax": true, // Giữ nguyên cú pháp module khi biên dịch
+    "noEmit": true, // Không tạo ra file đầu ra, chỉ kiểm tra lỗi
+
+    // Best practices
+    "strict": true, // Bật tất cả các kiểm tra nghiêm ngặt
+    "skipLibCheck": true, // Bỏ qua kiểm tra các file định nghĩa thư viện
+    "noFallthroughCasesInSwitch": true, // Ngăn chặn trường hợp rơi xuống trong switch
+
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": true, // Báo lỗi nếu có biến cục bộ không sử dụng
+    "noUnusedParameters": true, // Báo lỗi nếu có tham số không sử dụng trong hàm
+    "noPropertyAccessFromIndexSignature": true, // Ngăn chặn truy cập thuộc tính từ chỉ số không xác định
+
+    "outDir": "dist", // Đường dẫn output cho thư mục build
+    "esModuleInterop": true,
+    "baseUrl": ".", // Đường dẫn base cho các import
+    "paths": {
+      "~/*": ["src/*"] // Đường dẫn tương đối cho các import (alias)
+    }
+  },
+  "files": ["src/type.d.ts"], // Các file dùng để defined global type cho dự án
+  "include": ["src/**/*"] // Đường dẫn include cho các file cần build
+}

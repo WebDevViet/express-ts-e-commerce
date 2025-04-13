@@ -1,0 +1,1 @@
+- Khi tài khoản đang đăng nhập trên đa thiết bị, mà vừa mới xác minh email bởi 1 trong những thiết bị đó thì ta phải websocket để thông báo cho các thiết bị khác refresh token, cấp lại accessToken mới để đồng bộ dữ liệu trong payload JWT `{ userVerifyStatus }`
