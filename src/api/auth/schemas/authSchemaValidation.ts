@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import userZod from '~/api/users/schemas/userZod.ts'
-import TokenSchemaValidations from './tokenSchemaValidation.ts'
-import type { BaseSchemaType } from '~/global/helpers/types/typeRequest.ts'
-import { AUTH_MESSAGES } from '../constants/authMessage.ts'
+import userZod from '~/api/users/schemas/userZod'
+import TokenSchemaValidations from './tokenSchemaValidation'
+import type { BaseSchemaType } from '~/global/helpers/types/typeRequest'
+import { AUTH_MESSAGES } from '../constants/authMessage'
 
 export default class AuthSchemaValidations extends TokenSchemaValidations {
   accessTokenSchema = z.object({ Authorization: this.accessToken })

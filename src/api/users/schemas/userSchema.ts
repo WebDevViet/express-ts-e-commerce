@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import { ObjectId } from 'mongodb'
 import { nanoid } from 'nanoid'
-import { AccountType, Gender, UserStatus } from '~/global/constants/enum/enumUser.ts'
+import { AccountType, Gender, UserStatus } from '~/global/constants/enum/enumUser'
 
 export interface TUser {
   id?: ObjectId

@@ -3,8 +3,8 @@ import fs from 'fs'
 import path from 'path'
 import { pick } from 'radashi'
 import sharp from 'sharp'
-import { handleUploadImage } from '~/core/file/initUploadFolder.ts'
-import { UPLOAD_IMAGES_DIR } from '~/global/constants/dir.ts'
+import { handleUploadImage } from '~/core/file/initUploadFolder'
+import { UPLOAD_IMAGES_DIR } from '~/global/constants/dir'
 
 class FilesServices {
   uploadImage = async (req: Request) => {

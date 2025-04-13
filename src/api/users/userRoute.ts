@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { reqHandler } from '~/global/utils/reqHandler.ts'
-import authMiddlewares from '../auth/authMiddleware.ts'
-import usersControllers from './userController.ts'
-// import usersMiddlewares from './userMiddleware.ts'
+import { reqHandler } from '~/global/utils/reqHandler'
+import authMiddlewares from '../auth/authMiddleware'
+import usersControllers from './userController'
+// import usersMiddlewares from './userMiddleware'
 
 const router = Router()
 

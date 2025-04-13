@@ -1,5 +1,5 @@
-import { validateBody, validateParams } from '~/global/utils/validate.ts'
-import UserSchemaValidations from './schemas/userSchemaValidation.ts'
+import { validateBody, validateParams } from '~/global/utils/validate'
+import UserSchemaValidations from './schemas/userSchemaValidation'
 
 class UsersMiddleware extends UserSchemaValidations {
   userProfile = validateParams(this.userProfileSchema)

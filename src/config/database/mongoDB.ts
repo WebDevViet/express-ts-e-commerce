@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import chalk from 'chalk'
 import { Collection, Db, MongoClient } from 'mongodb'
-import RefreshToken from '~/api/auth/schemas/refreshTokenSchema.ts'
-import Follower from '~/api/users/schemas/followerSchema.ts'
-import User from '~/api/users/schemas/userSchema.ts'
+import RefreshToken from '~/api/auth/schemas/refreshTokenSchema'
+import Follower from '~/api/users/schemas/followerSchema'
+import User from '~/api/users/schemas/userSchema'
 
 class MongoDB {
   private client: MongoClient

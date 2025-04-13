@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import type { JsonifyOptions } from '~/core/middlewares/jsonify.ts'
+import type { JsonifyOptions } from '~/core/middlewares/jsonify'
 
 declare global {
   namespace Express {

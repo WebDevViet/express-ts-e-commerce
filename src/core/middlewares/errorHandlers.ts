@@ -2,9 +2,9 @@ import type { NextFunction, Request, Response } from 'express'
 import createError from 'http-errors'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import { ZodError } from 'zod'
-import type { JsonifyOptions } from '~/core/middlewares/jsonify.ts'
-import { TypeError } from '~/global/constants/enum/typeError.ts'
-import formatZodError from '~/global/helpers/formatZodError.ts'
+import type { JsonifyOptions } from '~/core/middlewares/jsonify'
+import { TypeError } from '~/global/constants/enum/typeError'
+import formatZodError from '~/global/helpers/formatZodError'
 
 export const notFound = (_req: Request, _res: Response, next: NextFunction) => {
   next(createError.NotFound())

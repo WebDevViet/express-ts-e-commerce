@@ -1,14 +1,19 @@
+import chalk from 'chalk'
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
+import debug from 'debug'
 import express from 'express'
+import http from 'http'
 import logger from 'morgan'
 import path from 'path'
-import cors from 'cors'
 
-import apiRoutes from './api/apiRoute.ts'
-import { errorHandler, notFound } from './core/middlewares/errorHandlers.ts'
-import initUploadFolder from './core/file/initUploadFolder.ts'
-import { jsonify } from '~/core/middlewares/jsonify.ts'
+import { jsonify } from '~/core/middlewares/jsonify'
+import apiRoutes from '~/api/apiRoute'
+import mongoDB from '~/config/database/mongoDB' // Import mongoDB
+import initUploadFolder from './core/file/initUploadFolder'
+import { errorHandler, notFound } from './core/middlewares/errorHandlers'
 
+const debuggerMongoose = debug('node-js-mongoose:server') // Import debug
 const app = express()
 
 app.use(
@@ -42,4 +47,57 @@ app.use(notFound)
 // error handler
 app.use(errorHandler)
 
-export default app
+async function startServer() {
+  const port = process.env.PORT || '4000'
+
+  app.set('port', port)
+
+  const server = http.createServer(app)
+
+  await mongoDB.connect()
+
+  server.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log(chalk.yellowBright(`Server running on port: ${port}`))
+  })
+  server.on('error', (error: any) => onError(error, port))
+  server.on('listening', () => onListening(server))
+}
+
+startServer()
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+function onError(error: any, port: string) {
+  if (error.syscall !== 'listen') {
+    throw error
+  }
+
+  const bind = `Pipe ${port}`
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      // eslint-disable-next-line no-console
+      console.error(bind + ' requires elevated privileges')
+      process.exit(1)
+      break
+    case 'EADDRINUSE':
+      // eslint-disable-next-line no-console
+      console.error(bind + ' is already in use')
+      process.exit(1)
+      break
+    default:
+      throw error
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+function onListening(server: http.Server) {
+  const addr = server.address()
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`
+  debuggerMongoose('Listening on ' + bind)
+}

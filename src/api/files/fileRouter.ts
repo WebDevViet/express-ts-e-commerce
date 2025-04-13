@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import filesControllers from './fileController.ts'
-import { reqHandler } from '~/global/utils/reqHandler.ts'
+import filesControllers from './fileController'
+import { reqHandler } from '~/global/utils/reqHandler'
 
 const router = Router()
 

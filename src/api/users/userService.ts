@@ -1,13 +1,13 @@
 import { camelCase, snakeCase } from 'change-case/keys'
 import createHttpError from 'http-errors'
 import { ObjectId, type Filter, type FindOneAndUpdateOptions, type FindOptions, type UpdateFilter } from 'mongodb'
-import mongoDB from '~/config/database/mongoDB.ts'
-import type { TSnakeCase } from '~/global/helpers/types/typeCase.ts'
-import { USERS_MESSAGES } from './constants/usersMessage.ts'
-import Follower from './schemas/followerSchema.ts'
-import type User from './schemas/userSchema.ts'
-import type { UserSchemaTypes } from './schemas/userSchemaValidation.ts'
-import type { MyProfileResult, UserProfileResult } from './types/userReqRes.ts'
+import mongoDB from '~/config/database/mongoDB'
+import type { TSnakeCase } from '~/global/helpers/types/typeCase'
+import { USERS_MESSAGES } from './constants/usersMessage'
+import Follower from './schemas/followerSchema'
+import type User from './schemas/userSchema'
+import type { UserSchemaTypes } from './schemas/userSchemaValidation'
+import type { MyProfileResult, UserProfileResult } from './types/userReqRes'
 
 const projection = { password: 0, email_verification_token: 0, forgot_password_token: 0 }
 

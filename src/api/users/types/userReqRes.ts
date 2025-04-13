@@ -1,8 +1,8 @@
 import type { Request } from 'express'
 import type { ParamsDictionary } from 'express-serve-static-core'
-import type { UserId } from '~/global/types/common.ts'
-import type { TUser } from '../schemas/userSchema.ts'
-import type { UserSchemaTypes } from '../schemas/userSchemaValidation.ts'
+import type { UserId } from '~/global/types/common'
+import type { TUser } from '../schemas/userSchema'
+import type { UserSchemaTypes } from '../schemas/userSchemaValidation'
 
 // Get username
 export type GetUsernameRequest = UserId

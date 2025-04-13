@@ -3,7 +3,7 @@ import chalk from 'chalk'
 import formidable from 'formidable'
 import fs from 'fs'
 import createHttpError from 'http-errors'
-import { UPLOAD_IMAGES_DIR, UPLOAD_TEMP_DIR } from '~/global/constants/dir.ts'
+import { UPLOAD_IMAGES_DIR, UPLOAD_TEMP_DIR } from '~/global/constants/dir'
 import type { Request } from 'express'
 
 export default function initUploadFolder() {

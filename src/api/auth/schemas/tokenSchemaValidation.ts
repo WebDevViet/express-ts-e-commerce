@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { BEARER_TOKEN_REGEX, JWT_REGEX } from '~/global/constants/regex.ts'
-import { verifyToken } from '~/global/helpers/handleJWT.ts'
-import { AUTH_MESSAGES } from '../constants/authMessage.ts'
+import { BEARER_TOKEN_REGEX, JWT_REGEX } from '~/global/constants/regex'
+import { verifyToken } from '~/global/helpers/handleJWT'
+import { AUTH_MESSAGES } from '../constants/authMessage'
 
 export default class TokenSchemaValidations {
   accessToken = z

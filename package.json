@@ -3,9 +3,9 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "dev": "bun --watch run ./src/bin/www",
+    "dev": "bun --watch run ./src/app.ts",
     "build": "rimraf ./dist && tsc && tsc-alias",
-    "start": "bun dist/index.js",
+    "start": "bun dist/app.js",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "prettier": "prettier --check .",
@@ -29,6 +29,7 @@
     "@types/bun": "latest",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
+    "@types/debug": "^4.1.12",
     "@types/express": "^5.0.0",
     "@types/formidable": "^3.4.5",
     "@types/http-errors": "^2.0.4",
@@ -40,7 +41,9 @@
     "eslint-plugin-react": "^7.37.4",
     "globals": "^15.14.0",
     "husky": "^9.1.7",
+    "i": "^0.3.7",
     "lint-staged": "^15.5.1",
+    "npm": "^11.3.0",
     "typescript-eslint": "^8.20.0"
   },
   "peerDependencies": {

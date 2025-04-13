@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import filesServices from './fileService.ts'
+import filesServices from './fileService'
 
 const filesControllers = {
   uploadImage: async (req: Request, res: Response) => {

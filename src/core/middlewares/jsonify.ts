@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express'
-import { TypeError } from '~/global/constants/enum/typeError.ts'
-import HttpStatus, { type KeysHttpStatus } from '~/global/constants/enum/httpStatus.ts'
+import { TypeError } from '~/global/constants/enum/typeError'
+import HttpStatus, { type KeysHttpStatus } from '~/global/constants/enum/httpStatus'
 
 export interface JsonifyOptions {
   data?: any

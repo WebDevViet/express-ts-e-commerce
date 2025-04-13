@@ -1,5 +1,5 @@
-export { jsonify } from './jsonify.ts'
-export { notFound, errorHandler } from './errorHandlers.ts'
+export { jsonify } from './jsonify'
+export { notFound, errorHandler } from './errorHandlers'
 
 // export const applyMiddlewares = (app: any) => {
 //   // parse application/json

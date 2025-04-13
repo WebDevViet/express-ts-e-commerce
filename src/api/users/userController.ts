@@ -6,8 +6,8 @@ import type {
   GetUserProfileRequest,
   UnfollowUserRequest,
   UpdateMyProfileRequest
-} from './types/userReqRes.ts'
-import usersServices from './userService.ts'
+} from './types/userReqRes'
+import usersServices from './userService'
 
 const usersControllers = {
   getMe: async (req: GetUsernameRequest, res: Response) => {

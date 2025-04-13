@@ -1,5 +1,5 @@
 import type { JwtPayload } from 'jsonwebtoken'
-import type { TokenType, UserVerifyStatus } from '../constants/enum/enumUser.ts'
+import type { TokenType, UserVerifyStatus } from '../constants/enum/enumUser'
 
 export interface TokenPayload extends JwtPayload {
   userId: string

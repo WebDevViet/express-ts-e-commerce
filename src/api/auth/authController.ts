@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import authServices from './authService.ts'
+import authServices from './authService'
 import type {
   ChangePasswordRequest,
   ForgotPasswordRequest,
@@ -11,7 +11,7 @@ import type {
   ResetPasswordRequest
   // ResendVerifyEmailRequest,
   // VerifyEmailRequest
-} from './types/authReqRes.ts'
+} from './types/authReqRes'
 
 const authControllers = {
   register: async (req: RegisterRequest, res: Response) => {

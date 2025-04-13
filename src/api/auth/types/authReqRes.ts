@@ -1,7 +1,7 @@
 import type { Request } from 'express'
 import type { ParamsDictionary } from 'express-serve-static-core'
-import type { UserId } from '~/global/types/common.ts'
-import type { AuthSchemaTypes } from '../schemas/authSchemaValidation.ts'
+import type { UserId } from '~/global/types/common'
+import type { AuthSchemaTypes } from '../schemas/authSchemaValidation'
 
 export type RegisterRequest = Request<ParamsDictionary, any, AuthSchemaTypes['registerSchema']>
 
