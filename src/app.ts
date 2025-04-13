@@ -17,12 +17,7 @@ const app = express()
 
 app.use(
   cors({
-    origin: [
-      'http://localhost:3000',
-      'https://localhost:3000',
-      'http://192.168.46.100:3000',
-      'https://192.168.46.100:3000'
-    ], // Chỉ cho phép các domain được khai báo
+    origin: process.env.URL_CLIENT, // Chỉ cho phép các domain được khai báo
     credentials: true // Cho phép trình duyệt gửi cookie đến server
   })
 )

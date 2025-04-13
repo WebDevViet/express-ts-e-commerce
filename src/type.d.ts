@@ -19,6 +19,8 @@ declare global {
       PORT: string
       SERVER_URL: string
 
+      URL_CLIENT: string
+
       DEFAULT_SECRET_KEY: string
 
       ACCESS_TOKEN_SECRET_KEY: string
