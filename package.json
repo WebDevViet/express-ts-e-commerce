@@ -7,13 +7,23 @@
     "build": "rimraf ./dist && tsc && tsc-alias",
     "start": "bun dist/index.js",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint-fix": "eslint . --fix",
     "prettier": "prettier --check .",
-    "prettier:fix": "prettier --write .",
+    "prettier-fix": "prettier --write .",
     "check-format": "bun lint && bun prettier",
-    "fix-format": "bun lint:fix && bun prettier:fix"
+    "fix-format": "bun lint-fix && bun prettier-fix",
+    "prepare": "husky",
+    "commitlint": "commitlint --edit"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "bun run fix-format",
+      "git add ."
+    ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
     "@eslint/js": "^9.18.0",
     "@types/bcrypt": "^5.0.2",
     "@types/bun": "latest",
@@ -29,6 +39,8 @@
     "eslint": "^9.18.0",
     "eslint-plugin-react": "^7.37.4",
     "globals": "^15.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.1",
     "typescript-eslint": "^8.20.0"
   },
   "peerDependencies": {
