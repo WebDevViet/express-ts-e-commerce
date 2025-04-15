@@ -2,13 +2,18 @@ import type { Request } from 'express'
 import type { ParamsDictionary } from 'express-serve-static-core'
 import type { UserId } from '~/global/types/common'
 import type { AuthSchemaTypes } from '../schemas/authSchemaValidation'
+import { RefreshTokenType } from '~/api/auth/schemas/refreshTokenSchema'
 
 export type RegisterRequest = Request<ParamsDictionary, any, AuthSchemaTypes['registerSchema']>
 
 export type LoginRequest = Request<ParamsDictionary, any, AuthSchemaTypes['loginSchema']>
 
 export type LogoutRequest = { cookies: AuthSchemaTypes['logoutSchema'] }
-export type RefreshTokenRequest = { cookies: AuthSchemaTypes['refreshTokenSchema'] } & UserId
+
+export type RefreshTokenRequest = {
+  refreshTokenRecord: Required<RefreshTokenType>
+  cookies: AuthSchemaTypes['refreshTokenSchema']
+} & UserId
 
 export type VerifyEmailRequest = Request<ParamsDictionary, any, AuthSchemaTypes['verifyEmailSchema']> & UserId
 

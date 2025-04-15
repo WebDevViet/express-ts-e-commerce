@@ -12,7 +12,7 @@ import User from '../users/schemas/userSchema'
 import usersServices from '../users/userService'
 import { AUTH_MESSAGES } from './constants/authMessage'
 import type { AuthSchemaTypes } from './schemas/authSchemaValidation'
-import RefreshToken from './schemas/refreshTokenSchema'
+import RefreshToken, { RefreshTokenType } from './schemas/refreshTokenSchema'
 import type { OAuthGoogleToken, OauthGoogleUserInfo } from './types/authReqRes'
 
 class AuthServices {
@@ -38,7 +38,7 @@ class AuthServices {
     })
   }
 
-  private signAccessToken({ userId }: { userId: ObjectId }) {
+  private signAccessToken(userId: ObjectId) {
     return signToken({
       payload: {
         userId,
@@ -49,23 +49,35 @@ class AuthServices {
     })
   }
 
-  private signRefreshToken(userId: ObjectId) {
+  private signRefreshToken(userId: ObjectId, expiresIn: number | string = process.env.REFRESH_TOKEN_EXPIRES_IN) {
     return signToken({
       payload: {
         userId,
         tokenType: TokenType.RefreshToken
       },
       secretKey: process.env.REFRESH_TOKEN_SECRET_KEY,
-      options: { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN }
+      options: { expiresIn }
     })
   }
 
-  private signAccessAndRefreshToken({ userId }: { userId: ObjectId }) {
-    return Promise.all([this.signAccessToken({ userId }), this.signRefreshToken(userId)])
+  private signAccessAndRefreshToken({
+    userId,
+    refreshTokenExpires
+  }: {
+    userId: ObjectId
+    refreshTokenExpires?: number
+  }) {
+    return Promise.all([this.signAccessToken(userId), this.signRefreshToken(userId, refreshTokenExpires)])
   }
 
-  private async signAndStoreTokens({ userId }: { userId: ObjectId }) {
-    const [accessToken, refreshToken] = await this.signAccessAndRefreshToken({ userId })
+  private async signAndStoreTokens({
+    userId,
+    refreshTokenExpires
+  }: {
+    userId: ObjectId
+    refreshTokenExpires?: number
+  }) {
+    const [accessToken, refreshToken] = await this.signAccessAndRefreshToken({ userId, refreshTokenExpires })
     await mongoDB.refreshTokens.insertOne(new RefreshToken({ userId, token: refreshToken }))
     return { accessToken, refreshToken }
   }
@@ -106,7 +118,7 @@ class AuthServices {
     res.cookie('Authorization', `Bearer ${data.accessToken}`, {
       httpOnly: true,
       secure: true,
-      sameSite: 'none',
+      sameSite: 'strict',
       expires: getAccessTokenExpires()
       // secure: process.env.NODE_ENV === 'production',
     })
@@ -114,10 +126,18 @@ class AuthServices {
     res.cookie('refresh-token', data.refreshToken, {
       httpOnly: true,
       secure: true,
-      sameSite: 'none',
+      sameSite: 'strict',
       expires: getRefreshTokenExpires()
       // secure: process.env.NODE_ENV === 'production',
     })
+  }
+  generateAuthTokensResponse({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) {
+    return {
+      accessToken,
+      expiresAccessToken: getAccessTokenExpires(),
+      refreshToken,
+      expiresRefreshToken: getRefreshTokenExpires()
+    }
   }
 
   async register({ email, password }: AuthSchemaTypes['registerSchema']) {
@@ -148,9 +168,20 @@ class AuthServices {
     await mongoDB.refreshTokens.deleteOne({ token: refreshToken })
   }
 
-  async refreshToken(userId: ObjectId, refreshToken: string) {
+  async refreshToken({
+    userId,
+    refreshToken,
+    refreshTokenRecord: { expiresAt: refreshTokenExpiresAt }
+  }: {
+    userId: ObjectId
+    refreshToken: string
+    refreshTokenRecord: Required<RefreshTokenType>
+  }) {
+    const currentTime = new Date().getTime()
+    const refreshTokenExpires = Math.floor((refreshTokenExpiresAt.getTime() - currentTime) / 1000)
+
     const [token] = await Promise.all([
-      this.signAndStoreTokens({ userId }),
+      this.signAndStoreTokens({ userId, refreshTokenExpires }),
       mongoDB.refreshTokens.deleteOne({ token: refreshToken })
     ])
 

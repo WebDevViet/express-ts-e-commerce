@@ -1,10 +1,12 @@
 import type { ObjectId } from 'mongodb'
+import { RefreshTokenType } from '~/api/auth/schemas/refreshTokenSchema'
 import type { JsonifyOptions } from '~/core/middlewares/jsonify'
 
 declare global {
   namespace Express {
     interface Request {
       userId?: ObjectId
+      refreshTokenRecord?: Required<RefreshTokenType> | null
     }
 
     interface Response {
@@ -20,6 +22,8 @@ declare global {
       SERVER_URL: string
 
       URL_CLIENTS: string
+
+      API_KEY: string
 
       DEFAULT_SECRET_KEY: string
 

@@ -11,6 +11,9 @@ import AuthSchemaValidations, { type AuthSchemaTypes } from './schemas/authSchem
 // import { USERS_MESSAGES } from '../users/constants/usersMessage'
 import mongoDB from '~/config/database/mongoDB'
 import createError from '~/global/utils/createError'
+import { camelCase } from 'change-case/keys'
+import { TCamelCase } from '~/global/helpers/types/typeCase'
+import { RefreshTokenType } from '~/api/auth/schemas/refreshTokenSchema'
 
 class AuthMiddlewares extends AuthSchemaValidations {
   access = validateCookies<AuthSchemaTypes['accessTokenSchema']>(
@@ -98,6 +101,7 @@ class AuthMiddlewares extends AuthSchemaValidations {
       }
 
       req.userId = new ObjectId(userId)
+      req.refreshTokenRecord = camelCase(refreshTokenRecord) as TCamelCase<Required<RefreshTokenType>>
     }
   )
 

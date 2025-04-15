@@ -36,7 +36,11 @@ const authControllers = {
   },
 
   refreshToken: async (req: RefreshTokenRequest, res: Response) => {
-    const token = await authServices.refreshToken(req.userId, req.cookies.refreshToken)
+    const token = await authServices.refreshToken({
+      userId: req.userId,
+      refreshToken: req.cookies.refreshToken,
+      refreshTokenRecord: req.refreshTokenRecord
+    })
 
     authServices.setAuthTokenToCookies(res, token)
 

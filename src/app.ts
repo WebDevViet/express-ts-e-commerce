@@ -3,28 +3,26 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import debug from 'debug'
 import express from 'express'
-import logger from 'morgan'
-import path from 'path'
 import http from 'http'
+import logger from 'morgan'
+import os from 'os'
+import path from 'path'
 
-// * SSL
+// * HTTPS
 // import https from 'https'
 // import fs from 'fs'
 
-import { jsonify } from '~/core/middlewares/jsonify'
-import apiRoutes from '~/api/apiRoute'
-import mongoDB from '~/config/database/mongoDB' // Import mongoDB
-import { errorHandler, notFound } from './core/middlewares/errorHandlers'
+import mongoDB from '~/config/database/mongoDB'
+import { applyMiddlewaresCustom } from '~/core/middlewares'
 
-const debuggerMongoose = debug('node-js-mongoose:server') // Import debug
 const app = express()
 
-const urlClients = JSON.parse(process.env.URL_CLIENTS || '["http://localhost:3000"]')
+const urlClients: string[] = JSON.parse(process.env.URL_CLIENTS || '["http://localhost:3000"]')
 
 app.use(
   cors({
-    origin: urlClients, // Chỉ cho phép các domain được khai báo
-    credentials: true // Cho phép trình duyệt gửi cookie đến server
+    origin: urlClients,
+    credentials: true
   })
 )
 app.use(logger('dev'))
@@ -33,16 +31,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use('/images', express.static(path.resolve('uploads/images')))
 
-// add res.jsonify to response object
-app.use(jsonify)
-
-app.use('/api', apiRoutes)
-
-// catch 404 and forward to error handler
-app.use(notFound)
-
-// error handler
-app.use(errorHandler)
+applyMiddlewaresCustom(app)
 
 async function startServer() {
   const port = process.env.PORT || '4000'
@@ -50,7 +39,7 @@ async function startServer() {
   app.set('port', port)
 
   const server = http.createServer(
-    // * SSL
+    // * HTTPS
     // const server = https.createServer(
     // {
     //   key: fs.readFileSync('./192.168.46.100-key.pem'),
@@ -63,7 +52,8 @@ async function startServer() {
 
   server.listen(port, () => {
     // eslint-disable-next-line no-console
-    console.log(chalk.yellowBright(`Server running on port: ${port}`))
+    console.log(chalk.yellowBright(`Server is running at http://${getLocalIP()}:${port}`))
+    // console.log(chalk.yellowBright(`Server is running at https://${getLocalIP()}:${port}`))
   })
   server.on('error', (error: any) => onError(error, port))
   server.on('listening', () => onListening(server))
@@ -101,8 +91,23 @@ function onError(error: any, port: string) {
 /**
  * Event listener for HTTP server "listening" event.
  */
+const debuggerMongoose = debug('node-js-mongoose:server') // Import debugger Mongoose
+
 function onListening(server: http.Server) {
   const addr = server.address()
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`
   debuggerMongoose('Listening on ' + bind)
+}
+
+function getLocalIP() {
+  const networkInterfaces = os.networkInterfaces()
+  for (const name in networkInterfaces) {
+    if (!networkInterfaces[name]) continue
+    for (const net of networkInterfaces[name]) {
+      if (net.family === 'IPv4' && !net.internal) {
+        return net.address
+      }
+    }
+  }
+  return 'localhost'
 }
