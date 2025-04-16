@@ -9,6 +9,7 @@ import { serverToServerAuth } from './serverToServerAuth'
 
 const log = (req: Request, _res: Response, next: NextFunction) => {
   console.log(chalk.yellow('--------------------------------------------------------------------------'))
+  console.log('🚀 ~ log ~ headers:', req.headers)
   console.log('🚀 ~ log ~ cookies:', req.cookies)
   console.log('🚀 ~ log ~ url:', req.url)
   next()

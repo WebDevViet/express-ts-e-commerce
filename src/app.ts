@@ -42,8 +42,8 @@ async function startServer() {
     // * HTTPS
     // const server = https.createServer(
     // {
-    //   key: fs.readFileSync('./192.168.46.100-key.pem'),
-    //   cert: fs.readFileSync('./192.168.46.100.pem')
+    //   key: fs.readFileSync('./172.22.208.1-key.pem'),
+    //   cert: fs.readFileSync('./172.22.208.1.pem')
     // },
     app
   )
@@ -51,9 +51,14 @@ async function startServer() {
   await mongoDB.connect()
 
   server.listen(port, () => {
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.log(chalk.yellowBright(`Server is running at http://${getLocalIP()}:${port}`))
+      // console.log(chalk.yellowBright(`Server is running at https://${getLocalIP()}:${port}`))
+      return
+    }
     // eslint-disable-next-line no-console
-    console.log(chalk.yellowBright(`Server is running at http://${getLocalIP()}:${port}`))
-    // console.log(chalk.yellowBright(`Server is running at https://${getLocalIP()}:${port}`))
+    console.log(chalk.yellowBright(`Server is running`))
   })
   server.on('error', (error: any) => onError(error, port))
   server.on('listening', () => onListening(server))
