@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { reqHandler } from '~/global/utils/reqHandler'
+import { reqHandler } from '@/global/utils/reqHandler'
 import authMiddlewares from '../auth/authMiddleware'
 import usersControllers from './userController'
 // import usersMiddlewares from './userMiddleware'

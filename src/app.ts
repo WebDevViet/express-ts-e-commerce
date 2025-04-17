@@ -9,11 +9,11 @@ import os from 'os'
 import path from 'path'
 
 // * HTTPS
-// import https from 'https'
-// import fs from 'fs'
+import https from 'https'
+import fs from 'fs'
 
-import mongoDB from '~/config/database/mongoDB'
-import { applyMiddlewaresCustom } from '~/core/middlewares'
+import mongoDB from '@/config/database/mongoDB'
+import { applyMiddlewaresCustom } from '@/core/middlewares'
 
 const app = express()
 
@@ -36,32 +36,48 @@ applyMiddlewaresCustom(app)
 async function startServer() {
   const port = process.env.PORT || '4000'
 
-  app.set('port', port)
-
-  const server = http.createServer(
-    // * HTTPS
-    // const server = https.createServer(
-    // {
-    //   key: fs.readFileSync('./172.22.208.1-key.pem'),
-    //   cert: fs.readFileSync('./172.22.208.1.pem')
-    // },
-    app
-  )
+  // app.set('port', port)
 
   await mongoDB.connect()
 
+  const server = http.createServer(app)
+
+  const isDevelopment = process.env.NODE_ENV === 'development'
+
   server.listen(port, () => {
-    if (process.env.NODE_ENV === 'development') {
+    if (isDevelopment) {
       // eslint-disable-next-line no-console
-      console.log(chalk.yellowBright(`Server is running at http://${getLocalIP()}:${port}`))
-      // console.log(chalk.yellowBright(`Server is running at https://${getLocalIP()}:${port}`))
-      return
+      console.log(chalk.yellowBright(`Server is running at http://localhost:${port}`))
     }
-    // eslint-disable-next-line no-console
-    console.log(chalk.yellowBright(`Server is running`))
   })
+
   server.on('error', (error: any) => onError(error, port))
   server.on('listening', () => onListening(server))
+
+  if (isDevelopment) {
+    // * HTTPS
+    const portHttps = process.env.PORT_HTTPS || '4001'
+
+    // app.set('portHttps', portHttps)
+
+    const server = https.createServer(
+      {
+        key: fs.readFileSync('./172.22.208.1-key.pem'),
+        cert: fs.readFileSync('./172.22.208.1.pem')
+      },
+      app
+    )
+
+    server.listen(portHttps, () => {
+      // eslint-disable-next-line no-console
+      console.log(chalk.yellowBright(`Server is running at https://${getLocalIP()}:${portHttps}`))
+    })
+    server.on('error', (error: any) => onError(error, portHttps))
+    server.on('listening', () => onListening(server))
+    return
+  }
+  // eslint-disable-next-line no-console
+  console.log(chalk.yellowBright(`Server is running`))
 }
 
 startServer()

@@ -1,7 +1,7 @@
 import createHttpError from 'http-errors'
 import { z } from 'zod'
-import userZod from '~/api/users/schemas/userZod'
-import type { SchemaTypes } from '~/global/helpers/types/typeRequest'
+import userZod from '@/api/users/schemas/userZod'
+import type { SchemaTypes } from '@/global/helpers/types/typeRequest'
 import { USERS_MESSAGES } from '../constants/usersMessage'
 import usersServices from '../userService'
 

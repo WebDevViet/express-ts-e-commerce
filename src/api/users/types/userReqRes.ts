@@ -1,6 +1,6 @@
 import type { Request } from 'express'
 import type { ParamsDictionary } from 'express-serve-static-core'
-import type { UserId } from '~/global/types/common'
+import type { UserId } from '@/global/types/common'
 import type { TUser } from '../schemas/userSchema'
 import type { UserSchemaTypes } from '../schemas/userSchemaValidation'
 

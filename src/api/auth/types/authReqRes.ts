@@ -1,8 +1,8 @@
 import type { Request } from 'express'
 import type { ParamsDictionary } from 'express-serve-static-core'
-import type { UserId } from '~/global/types/common'
+import type { UserId } from '@/global/types/common'
 import type { AuthSchemaTypes } from '../schemas/authSchemaValidation'
-import { RefreshTokenType } from '~/api/auth/schemas/refreshTokenSchema'
+import { RefreshTokenType } from '@/api/auth/schemas/refreshTokenSchema'
 
 export type RegisterRequest = Request<ParamsDictionary, any, AuthSchemaTypes['registerSchema']>
 

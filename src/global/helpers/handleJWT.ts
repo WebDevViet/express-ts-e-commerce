@@ -2,7 +2,7 @@ import jwt, { type SignOptions } from 'jsonwebtoken'
 import type { TokenPayload } from '../types/JWT'
 import formatJWTMessage from './formatJWTMessage'
 import ms, { type StringValue } from 'ms'
-import type { TokenType } from '~/global/constants/enum/enumUser'
+import type { TokenType } from '@/global/constants/enum/enumUser'
 
 export const signToken = ({
   payload,

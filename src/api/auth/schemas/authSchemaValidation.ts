@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import userZod from '~/api/users/schemas/userZod'
+import userZod from '@/api/users/schemas/userZod'
 import TokenSchemaValidations from './tokenSchemaValidation'
-import type { BaseSchemaType } from '~/global/helpers/types/typeRequest'
+import type { BaseSchemaType } from '@/global/helpers/types/typeRequest'
 import { AUTH_MESSAGES } from '../constants/authMessage'
 
 export default class AuthSchemaValidations extends TokenSchemaValidations {

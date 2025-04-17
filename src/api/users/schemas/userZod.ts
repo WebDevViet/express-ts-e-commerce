@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { z } from 'zod'
-import { PASSWORD_REGEX, USERNAME_REGEX } from '~/global/constants/regex'
+import { PASSWORD_REGEX, USERNAME_REGEX } from '@/global/constants/regex'
 
 const userZod = z.object({
   id: z

@@ -1,5 +1,5 @@
 import type { VerifyErrors } from 'jsonwebtoken'
-import type { TokenType } from '~/global/constants/enum/enumUser'
+import type { TokenType } from '@/global/constants/enum/enumUser'
 
 const formatJWTMessage = (err: VerifyErrors, label: string, typeToken: keyof typeof TokenType) => {
   err.message = err.message.replace(/jwt/gi, label).trim()

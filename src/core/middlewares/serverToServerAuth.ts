@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import createError from '~/global/utils/createError'
-import { validateHeaders } from '~/global/utils/validate'
+import createError from '@/global/utils/createError'
+import { validateHeaders } from '@/global/utils/validate'
 
 export const serverToServerAuth = validateHeaders(
   z

@@ -1,6 +1,6 @@
 import createHttpError, { type HttpError } from 'http-errors'
-import { HttpErrorStatus } from '~/global/constants/enum/httpErrorStatus'
-import type { TypeError } from '~/global/constants/enum/typeError'
+import { HttpErrorStatus } from '@/global/constants/enum/httpErrorStatus'
+import type { TypeError } from '@/global/constants/enum/typeError'
 
 type CreateErrorOptions =
   | {

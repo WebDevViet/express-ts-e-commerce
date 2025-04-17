@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { getRefreshTokenExpires } from '~/global/helpers/handleJWT'
+import { getRefreshTokenExpires } from '@/global/helpers/handleJWT'
 
 export interface RefreshTokenType {
   id?: ObjectId

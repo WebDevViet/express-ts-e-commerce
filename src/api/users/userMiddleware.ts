@@ -1,4 +1,4 @@
-import { validateBody, validateParams } from '~/global/utils/validate'
+import { validateBody, validateParams } from '@/global/utils/validate'
 import UserSchemaValidations from './schemas/userSchemaValidation'
 
 class UsersMiddleware extends UserSchemaValidations {

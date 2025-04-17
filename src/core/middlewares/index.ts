@@ -2,7 +2,7 @@
 import chalk from 'chalk'
 import { Application, NextFunction, Request, Response } from 'express'
 
-import apiRoutes from '~/api/apiRoute'
+import apiRoutes from '@/api/apiRoute'
 import { errorHandler, notFound } from './errorHandlers'
 import { jsonify } from './jsonify'
 import { serverToServerAuth } from './serverToServerAuth'
@@ -16,6 +16,8 @@ const log = (req: Request, _res: Response, next: NextFunction) => {
 }
 
 export const applyMiddlewaresCustom = (app: Application) => {
+  console.clear()
+
   app.use(log)
 
   // parse application/json

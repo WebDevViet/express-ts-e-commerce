@@ -1,6 +1,6 @@
 import type { ObjectId } from 'mongodb'
-import { RefreshTokenType } from '~/api/auth/schemas/refreshTokenSchema'
-import type { JsonifyOptions } from '~/core/middlewares/jsonify'
+import { RefreshTokenType } from '@/api/auth/schemas/refreshTokenSchema'
+import type { JsonifyOptions } from '@/core/middlewares/jsonify'
 
 declare global {
   namespace Express {
@@ -19,6 +19,7 @@ declare global {
       NODE_ENV: string
 
       PORT: string
+      PORT_HTTPS: string
       SERVER_URL: string
 
       URL_CLIENTS: string

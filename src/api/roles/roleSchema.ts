@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { ObjectId } from 'mongodb'
-import { UserVerifyStatus } from '~/global/constants/enum/enumUser'
+import { UserVerifyStatus } from '@/global/constants/enum/enumUser'
 
 export interface UserType {
   id?: ObjectId
