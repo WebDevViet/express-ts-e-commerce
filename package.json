@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "bun --watch run ./src/app.ts",
-    "build": "rimraf ./dist && bun run build.js",
-    "build-rollup": "rimraf ./dist && rollup -c",
+    "build": "rimraf ./dist && rollup -c",
+    "build-bun": "rimraf ./dist && bun run build.js",
     "start": "bun dist/app.js",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
