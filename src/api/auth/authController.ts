@@ -44,7 +44,15 @@ const authControllers = {
 
     authServices.setAuthTokenToCookies(res, token)
 
-    res.jsonify({ message: 'Refresh token successfully' })
+    const resData: { message: string; data?: ReturnType<typeof authServices.getTokenOptions> } = {
+      message: 'Refresh token successfully'
+    }
+
+    if (req.body.serverKey) {
+      resData.data = authServices.getTokenOptions(token)
+    }
+
+    res.jsonify(resData)
   },
 
   // verifyEmail: async (req: VerifyEmailRequest, res: Response) => {

@@ -20,6 +20,8 @@ class AuthMiddlewares extends AuthSchemaValidations {
     this.accessTokenSchema,
     async ({ Authorization: token }, req) => {
       const { userId } = await verifyToken<AccessTokenPayload>({
+        // token:
+        //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2YyYTJjNjFjZGRhZTBlZDdmNWFhYzciLCJ0b2tlblR5cGUiOjAsImlhdCI6MTc0NjY5NDUyNSwiZXhwIjoxNzQ2Njk0NTM1fQ.7v2QlD03JpOsSt1EYUxeBLhZgC-bDK02nzlV2iweVQQ',
         token,
         secretKey: process.env.ACCESS_TOKEN_SECRET_KEY,
         label: 'Access token',
@@ -52,7 +54,7 @@ class AuthMiddlewares extends AuthSchemaValidations {
   login = validateBody(this.loginSchema)
 
   logout = validateCookies(
-    this.logoutSchema.refine(async ({ Authorization: accessToken, 'refresh-token': refreshToken }) => {
+    this.logoutSchema.refine(async ({ Authorization: accessToken, refreshToken }) => {
       const [refreshTokenRecord] = await Promise.all([
         mongoDB.refreshTokens.findOne({ token: refreshToken }),
         verifyToken({
@@ -82,7 +84,7 @@ class AuthMiddlewares extends AuthSchemaValidations {
 
   refresh = validateCookies<AuthSchemaTypes['refreshTokenSchema']>(
     this.refreshTokenSchema,
-    async ({ 'refresh-token': refreshToken }, req) => {
+    async ({ refreshToken }, req) => {
       const [refreshTokenRecord, { userId }] = await Promise.all([
         mongoDB.refreshTokens.findOne({ token: refreshToken }),
         verifyToken({
@@ -95,7 +97,7 @@ class AuthMiddlewares extends AuthSchemaValidations {
 
       if (!refreshTokenRecord) {
         throw createError.Unauthorized({
-          message: AUTH_MESSAGES.REFRESH_TOKEN_EXPIRES,
+          message: AUTH_MESSAGES.LOGIN_SESSION_EXPIRED,
           name: 'RefreshTokenExpiredError'
         })
       }
@@ -104,6 +106,21 @@ class AuthMiddlewares extends AuthSchemaValidations {
       req.refreshTokenRecord = camelCase(refreshTokenRecord) as TCamelCase<Required<RefreshTokenType>>
     }
   )
+
+  reqFromServer = (SERVER_KEY: string) =>
+    validateBody(
+      this.serverKeySchema.refine(({ serverKey }) => {
+        if (!serverKey) {
+          return true
+        }
+
+        if (serverKey !== SERVER_KEY) {
+          throw createError.Unauthorized('Server key is invalid')
+        }
+
+        return true
+      })
+    )
 
   // verifyEmail = validateBody(this.verifyEmailSchema)
 

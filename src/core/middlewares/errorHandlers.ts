@@ -6,6 +6,8 @@ import type { JsonifyOptions } from '@/core/middlewares/jsonify'
 import { TypeError } from '@/global/constants/enum/typeError'
 import formatZodError from '@/global/helpers/formatZodError'
 
+// * Constants
+
 export const notFound = (_req: Request, _res: Response, next: NextFunction) => {
   next(createError.NotFound())
 }
@@ -41,14 +43,11 @@ export const errorHandler = (
     if (errorAuthorization || errorRefreshToken) {
       responseData.status = 'UNAUTHORIZED'
       responseData.message = errorAuthorization || errorRefreshToken
-      responseData.typeError = errorAuthorization
-        ? TypeError.AccessTokenExpiredError
-        : TypeError.RefreshTokenExpiredError
+      responseData.typeError = TypeError.UnauthorizedError
     }
 
-    if (errorAuthorization && errorRefreshToken) {
-      responseData.message = 'Access token and refresh token is required'
-      responseData.typeError = TypeError.AuthenTokenExpiredError
+    if (errorAuthorization?.includes('required') && !errorRefreshToken) {
+      responseData.typeError = TypeError.AccessTokenExpiredError
     }
 
     return res.jsonify(responseData)

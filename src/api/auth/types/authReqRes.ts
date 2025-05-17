@@ -13,7 +13,8 @@ export type LogoutRequest = { cookies: AuthSchemaTypes['logoutSchema'] }
 export type RefreshTokenRequest = {
   refreshTokenRecord: Required<RefreshTokenType>
   cookies: AuthSchemaTypes['refreshTokenSchema']
-} & UserId
+} & UserId &
+  Request<ParamsDictionary, any, AuthSchemaTypes['serverKeySchema']>
 
 export type VerifyEmailRequest = Request<ParamsDictionary, any, AuthSchemaTypes['verifyEmailSchema']> & UserId
 

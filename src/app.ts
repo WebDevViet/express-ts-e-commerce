@@ -17,11 +17,11 @@ import { applyMiddlewaresCustom } from '@/core/middlewares'
 
 const app = express()
 
-const urlClients: string[] = JSON.parse(process.env.URL_CLIENTS || '["http://localhost:3000"]')
+const originsCORS: string[] = JSON.parse(process.env.URL_CLIENTS || '["http://localhost:3000"]')
 
 app.use(
   cors({
-    origin: urlClients,
+    origin: originsCORS,
     credentials: true
   })
 )
@@ -56,17 +56,24 @@ async function startServer() {
 
   if (isDevelopment) {
     // * HTTPS
+    const dirPath = './ssl' // thư mục hiện tại
+    const files = fs.readdirSync(dirPath)
+
+    const keyFile = files.find((file) => file.endsWith('-key.pem'))
+    const certFile = files.find((file) => file.endsWith('.pem') && !file.endsWith('-key.pem'))
+
+    if (!keyFile || !certFile) {
+      // eslint-disable-next-line no-console
+      console.error('Không tìm thấy file key hoặc cert')
+      return
+    }
+
+    const key = fs.readFileSync(path.join(dirPath, keyFile))
+    const cert = fs.readFileSync(path.join(dirPath, certFile))
+
+    const server = https.createServer({ key, cert }, app)
+
     const portHttps = process.env.PORT_HTTPS || '4001'
-
-    // app.set('portHttps', portHttps)
-
-    const server = https.createServer(
-      {
-        key: fs.readFileSync('./172.22.208.1-key.pem'),
-        cert: fs.readFileSync('./172.22.208.1.pem')
-      },
-      app
-    )
 
     server.listen(portHttps, () => {
       // eslint-disable-next-line no-console

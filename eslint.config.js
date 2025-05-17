@@ -35,7 +35,14 @@ export default defineConfig([
       '@typescript-eslint/no-empty-object': 'off',
       'prettier/prettier': [
         'warn',
-        { semi: false, singleQuote: true, trailingComma: 'none', printWidth: 120, tabWidth: 2, endOfLine: 'auto' }
+        {
+          semi: false,
+          singleQuote: true,
+          trailingComma: 'none',
+          printWidth: 120,
+          tabWidth: 2,
+          endOfLine: 'auto'
+        }
       ]
     },
     ignores: ['build.js', 'rollup.config.mjs', 'eslint.config.js', 'commitlint.config.js']

@@ -2,12 +2,12 @@
  * Bearer token regex
  *
  * Matches a Bearer token in the following format:
- * Bearer <access_token>.<refresh_token>.<signature>
+ * Bearer `<access_token>.<refresh_token>.<signature>`
  *
  * Where:
- * - <access_token> is a string consisting of letters, numbers, hyphens and underscores
- * - <refresh_token> is a string consisting of letters, numbers, hyphens and underscores
- * - <signature> is a string consisting of letters, numbers, hyphens, underscores and forward slashes
+ * - `<access_token>` is a string consisting of letters, numbers, hyphens and underscores
+ * - `<refresh_token>` is a string consisting of letters, numbers, hyphens and underscores
+ * - `<signature>` is a string consisting of letters, numbers, hyphens, underscores and forward slashes
  */
 export const BEARER_TOKEN_REGEX = /^Bearer [A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/
 
@@ -15,12 +15,12 @@ export const BEARER_TOKEN_REGEX = /^Bearer [A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za
  * JWT regex
  *
  * Matches a JWT in the following format:
- * <header>.<payload>.<signature>
+ * `<header>.<payload>.<signature>`
  *
  * Where:
- * - <header> is a string consisting of letters, numbers, hyphens and underscores
- * - <payload> is a string consisting of letters, numbers, hyphens and underscores
- * - <signature> is a string consisting of letters, numbers, hyphens, underscores and forward slashes
+ * - `<header>` is a string consisting of letters, numbers, hyphens and underscores
+ * - `<payload>` is a string consisting of letters, numbers, hyphens and underscores
+ * - `<signature>` is a string consisting of letters, numbers, hyphens, underscores and forward slashes
  */
 export const JWT_REGEX = /[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/
 

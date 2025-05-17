@@ -14,8 +14,7 @@ export default class TokenSchemaValidations {
     .regex(JWT_REGEX, { message: AUTH_MESSAGES.REFRESH_TOKEN_INVALID })
 
   emailVerificationToken = z
-    .string()
-    .nonempty({ message: 'Giá trị không được để trống' })
+    .string({ required_error: AUTH_MESSAGES.EMAIL_VERIFICATION_TOKEN_REQUIRED })
     .regex(JWT_REGEX, { message: AUTH_MESSAGES.EMAIL_VERIFICATION_TOKEN_INVALID })
     .refine(async (token) => {
       await verifyToken({

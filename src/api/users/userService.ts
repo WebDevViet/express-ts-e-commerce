@@ -8,6 +8,7 @@ import Follower from './schemas/followerSchema'
 import type User from './schemas/userSchema'
 import type { UserSchemaTypes } from './schemas/userSchemaValidation'
 import type { MyProfileResult, UserProfileResult } from './types/userReqRes'
+import { pick } from 'radashi'
 
 const projection = { password: 0, email_verification_token: 0, forgot_password_token: 0 }
 
@@ -48,7 +49,7 @@ class UsersServices {
   async getMe(userId: ObjectId) {
     const user = await this.getUserById(userId)
     if (!user) throw createHttpError.NotFound(USERS_MESSAGES.USER_NOT_FOUND)
-    return { username: user.username }
+    return pick(user, ['username', 'email', 'avatar'])
   }
 
   async getUserProfile(username: string) {

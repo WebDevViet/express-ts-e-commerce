@@ -12,10 +12,10 @@ To run:
 bun run index.ts
 ```
 
-To create SSL certificate:
+To create SSL certificate with mkcert:
 
 ```bash
-mkcert 192.168.1.01
+rm -rf ssl && mkdir ssl && cd ssl && mkcert 192.168.46.104
 ```
 
 This project was created using `bun init` in bun v1.1.26. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.

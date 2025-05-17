@@ -13,7 +13,7 @@ const usersControllers = {
   getMe: async (req: GetUsernameRequest, res: Response) => {
     const username = await usersServices.getMe(req.userId)
 
-    res.jsonify({ data: username, message: 'Get username successfully' })
+    res.jsonify({ data: username, message: 'Get me successfully' })
   },
   getUserProfile: async (req: GetUserProfileRequest, res: Response) => {
     const user = await usersServices.getUserProfile(req.params.username)

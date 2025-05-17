@@ -1,8 +1,9 @@
 // rollup.config.mjs
-import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
+import resolve from '@rollup/plugin-node-resolve'
+import terser from '@rollup/plugin-terser'
+import typescript from '@rollup/plugin-typescript'
 import { builtinModules } from 'module'
 
 const externalLibs = [
@@ -24,11 +25,20 @@ export default {
     json(),
     resolve({
       extensions: ['.js', '.ts'],
-      preferBuiltins: true
+      preferBuiltins: true,
+      exportConditions: ['node']
     }),
     commonjs(),
     typescript({
       tsconfig: './tsconfig.json'
+    }),
+    terser({
+      // compress: {
+      //   drop_console: true // Loại bỏ console.log
+      // },
+      format: {
+        comments: false // Xóa tất cả comment trong file minified
+      }
     })
   ]
 }

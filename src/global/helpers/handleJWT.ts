@@ -42,6 +42,6 @@ export const verifyToken = <T extends TokenPayload>({
 }
 
 export const getRefreshTokenExpires = () =>
-  new Date(Date.now() + ms(process.env.REFRESH_TOKEN_EXPIRES_IN as StringValue))
+  new Date(Date.now() + 60000 + ms(process.env.REFRESH_TOKEN_EXPIRES_IN as StringValue))
 
 export const getAccessTokenExpires = () => new Date(Date.now() + ms(process.env.ACCESS_TOKEN_EXPIRES_IN as StringValue))

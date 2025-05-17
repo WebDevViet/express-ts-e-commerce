@@ -5,6 +5,8 @@ try {
   const buildResult = await Bun.build({
     // Đặt entry point giống như trong rollup.config.mjs
     entrypoints: ['src/app.ts'],
+    // build cho môi trường server dùng bun
+    target: 'bun',
     // Thư mục xuất ra kết quả build
     outdir: 'dist',
     // Sử dụng định dạng CommonJS cho Node.js
@@ -23,9 +25,9 @@ try {
       '.ts': 'ts', // Bun tích hợp hỗ trợ chuyển đổi TypeScript
       '.js': 'js',
       '.json': 'json' // Tương tự như plugin json của Rollup
-    }
+    },
+    minify: true
     // Bạn có thể bổ sung thêm các tùy chọn khác như minify, banner,...
-    // minify: true
   })
 
   if (!buildResult.success) {

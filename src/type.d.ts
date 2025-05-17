@@ -26,6 +26,8 @@ declare global {
 
       API_KEY: string
 
+      NEXTJS_SERVER_KEY: string
+
       DEFAULT_SECRET_KEY: string
 
       ACCESS_TOKEN_SECRET_KEY: string

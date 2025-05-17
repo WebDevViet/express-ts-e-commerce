@@ -3,9 +3,12 @@ import userZod from '@/api/users/schemas/userZod'
 import TokenSchemaValidations from './tokenSchemaValidation'
 import type { BaseSchemaType } from '@/global/helpers/types/typeRequest'
 import { AUTH_MESSAGES } from '../constants/authMessage'
+import createError from '@/global/utils/createError'
 
 export default class AuthSchemaValidations extends TokenSchemaValidations {
-  accessTokenSchema = z.object({ Authorization: this.accessToken })
+  accessTokenSchema = z
+    .object({ 'refresh-token': this.refreshToken, Authorization: this.accessToken })
+    .transform((value) => ({ ...value, refreshToken: value['refresh-token'] }))
 
   verifyEmailSchema = z.object({ emailVerificationToken: this.emailVerificationToken })
 
@@ -13,13 +16,22 @@ export default class AuthSchemaValidations extends TokenSchemaValidations {
 
   loginSchema = userZod.pick({ email: true, password: true })
 
-  logoutSchema = z
-    .object({ 'refresh-token': this.refreshToken, Authorization: this.accessToken })
-    .transform((value) => ({ ...value, refreshToken: value['refresh-token'] }))
+  logoutSchema = this.accessTokenSchema
 
   refreshTokenSchema = z
     .object({ 'refresh-token': this.refreshToken })
     .transform((value) => ({ ...value, refreshToken: value['refresh-token'] }))
+    .refine(({ refreshToken }) => {
+      if (!refreshToken)
+        throw createError.Unauthorized({
+          message: AUTH_MESSAGES.REFRESH_TOKEN_REQUIRED,
+          name: 'RefreshTokenExpiredError'
+        })
+
+      return true
+    })
+
+  serverKeySchema = z.object({ serverKey: z.string().optional() })
 
   forgotPasswordSchema = z.object({ email: userZod.shape.email })
 

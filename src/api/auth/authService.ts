@@ -72,13 +72,17 @@ class AuthServices {
 
   private async signAndStoreTokens({
     userId,
-    refreshTokenExpires
+    refreshTokenExpires,
+    refreshTokenExpiresAt
   }: {
     userId: ObjectId
     refreshTokenExpires?: number
+    refreshTokenExpiresAt?: Date
   }) {
     const [accessToken, refreshToken] = await this.signAccessAndRefreshToken({ userId, refreshTokenExpires })
-    await mongoDB.refreshTokens.insertOne(new RefreshToken({ userId, token: refreshToken }))
+    await mongoDB.refreshTokens.insertOne(
+      new RefreshToken({ userId, token: refreshToken, expiresAt: refreshTokenExpiresAt })
+    )
     return { accessToken, refreshToken }
   }
 
@@ -131,12 +135,23 @@ class AuthServices {
       // secure: process.env.NODE_ENV === 'production',
     })
   }
-  generateAuthTokensResponse({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) {
+
+  getTokenOptions({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) {
     return {
-      accessToken,
-      expiresAccessToken: getAccessTokenExpires(),
-      refreshToken,
-      expiresRefreshToken: getRefreshTokenExpires()
+      accessToken: {
+        value: accessToken,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        expires: getAccessTokenExpires()
+      },
+      refreshToken: {
+        value: refreshToken,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        expires: getRefreshTokenExpires()
+      }
     }
   }
 
@@ -181,7 +196,7 @@ class AuthServices {
     const refreshTokenExpires = Math.floor((refreshTokenExpiresAt.getTime() - currentTime) / 1000)
 
     const [token] = await Promise.all([
-      this.signAndStoreTokens({ userId, refreshTokenExpires }),
+      this.signAndStoreTokens({ userId, refreshTokenExpires, refreshTokenExpiresAt }),
       mongoDB.refreshTokens.deleteOne({ token: refreshToken })
     ])
 

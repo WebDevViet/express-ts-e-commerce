@@ -28,7 +28,12 @@ router.post('/logout', authMiddlewares.logout, reqHandler(authControllers.logout
  * @route POST /api/auth/refresh-token
  * @cookies { refresh-token: <token> }
  */
-router.post('/refresh-token', authMiddlewares.refresh, reqHandler(authControllers.refreshToken))
+router.post(
+  '/refresh-token',
+  authMiddlewares.refresh,
+  authMiddlewares.reqFromServer(process.env.NEXTJS_SERVER_KEY),
+  reqHandler(authControllers.refreshToken)
+)
 
 /** Verify email
  * @route POST /api/auth/verify-email
