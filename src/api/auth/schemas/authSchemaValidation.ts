@@ -7,8 +7,11 @@ import createError from '@/global/utils/createError'
 
 export default class AuthSchemaValidations extends TokenSchemaValidations {
   accessTokenSchema = z
-    .object({ 'refresh-token': this.refreshToken, Authorization: this.accessToken })
-    .transform((value) => ({ ...value, refreshToken: value['refresh-token'] }))
+    .object({
+      refresh_token: this.refreshToken,
+      Authorization: this.accessToken
+    })
+    .transform((value) => ({ ...value, refreshToken: value['refresh_token'] }))
 
   verifyEmailSchema = z.object({ emailVerificationToken: this.emailVerificationToken })
 
@@ -19,8 +22,8 @@ export default class AuthSchemaValidations extends TokenSchemaValidations {
   logoutSchema = this.accessTokenSchema
 
   refreshTokenSchema = z
-    .object({ 'refresh-token': this.refreshToken })
-    .transform((value) => ({ ...value, refreshToken: value['refresh-token'] }))
+    .object({ refresh_token: this.refreshToken })
+    .transform((value) => ({ ...value, refreshToken: value['refresh_token'] }))
     .refine(({ refreshToken }) => {
       if (!refreshToken)
         throw createError.Unauthorized({

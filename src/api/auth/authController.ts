@@ -36,20 +36,20 @@ const authControllers = {
   },
 
   refreshToken: async (req: RefreshTokenRequest, res: Response) => {
-    const token = await authServices.refreshToken({
+    const dataToken = await authServices.refreshToken({
       userId: req.userId,
       refreshToken: req.cookies.refreshToken,
       refreshTokenRecord: req.refreshTokenRecord
     })
 
-    authServices.setAuthTokenToCookies(res, token)
+    authServices.setAuthTokenToCookies(res, dataToken)
 
     const resData: { message: string; data?: ReturnType<typeof authServices.getTokenOptions> } = {
       message: 'Refresh token successfully'
     }
 
     if (req.body.serverKey) {
-      resData.data = authServices.getTokenOptions(token)
+      resData.data = authServices.getTokenOptions(dataToken)
     }
 
     res.jsonify(resData)

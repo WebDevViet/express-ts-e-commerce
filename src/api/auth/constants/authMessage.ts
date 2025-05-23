@@ -14,5 +14,6 @@ export const AUTH_MESSAGES = {
   REFRESH_TOKEN_INVALID: 'Refresh token is invalid',
   REFRESH_TOKEN_REQUIRED: 'Refresh token is required',
   REFRESH_TOKEN_EXPIRES: 'Refresh token expired',
-  LOGIN_SESSION_EXPIRED: 'Your login session has expired. Please sign in again to continue.'
+  LOGIN_SESSION_EXPIRED: 'Your login session has expired. Please login again to continue',
+  LOGIN_REQUIRED: 'Please login to continue'
 } as const

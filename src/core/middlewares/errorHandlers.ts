@@ -5,6 +5,7 @@ import { ZodError } from 'zod'
 import type { JsonifyOptions } from '@/core/middlewares/jsonify'
 import { TypeError } from '@/global/constants/enum/typeError'
 import formatZodError from '@/global/helpers/formatZodError'
+import { AUTH_MESSAGES } from '@/api/auth/constants/authMessage'
 
 // * Constants
 
@@ -14,7 +15,7 @@ export const notFound = (_req: Request, _res: Response, next: NextFunction) => {
 
 export const errorHandler = (
   err: unknown,
-  _req: Request,
+  req: Request,
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next: NextFunction
@@ -38,7 +39,7 @@ export const errorHandler = (
     if (!responseData.errors) return res.jsonify(responseData)
 
     const errorAuthorization = responseData.errors['Authorization']
-    const errorRefreshToken = responseData.errors['refresh-token']
+    const errorRefreshToken = responseData.errors['refresh_token']
 
     if (errorAuthorization || errorRefreshToken) {
       responseData.status = 'UNAUTHORIZED'
@@ -46,8 +47,20 @@ export const errorHandler = (
       responseData.typeError = TypeError.UnauthorizedError
     }
 
-    if (errorAuthorization?.includes('required') && !errorRefreshToken) {
+    const requiredAccessToken = errorAuthorization?.includes('required')
+    const requiredRefreshToken = errorRefreshToken?.includes('required')
+
+    if (requiredAccessToken && !errorRefreshToken) {
       responseData.typeError = TypeError.AccessTokenExpiredError
+    }
+
+    if (requiredAccessToken && requiredRefreshToken) {
+      if (req.cookies['logged_in'] === 'true') {
+        responseData.message = AUTH_MESSAGES.LOGIN_SESSION_EXPIRED
+        responseData.typeError = TypeError.RefreshTokenExpiredError
+      } else {
+        responseData.message = AUTH_MESSAGES.LOGIN_REQUIRED
+      }
     }
 
     return res.jsonify(responseData)

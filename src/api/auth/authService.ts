@@ -117,7 +117,10 @@ class AuthServices {
     return data
   }
 
-  setAuthTokenToCookies(res: Response, data: { accessToken: string; refreshToken: string }) {
+  setAuthTokenToCookies(
+    res: Response,
+    data: { accessToken: string; refreshToken: string; refreshTokenExpiresAt?: Date }
+  ) {
     // RFC 6265 - https://datatracker.ietf.org/doc/html/rfc6265 - cookie key naming format
     res.cookie('Authorization', `Bearer ${data.accessToken}`, {
       httpOnly: true,
@@ -127,16 +130,24 @@ class AuthServices {
       // secure: process.env.NODE_ENV === 'production',
     })
 
-    res.cookie('refresh-token', data.refreshToken, {
+    res.cookie('refresh_token', data.refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
-      expires: getRefreshTokenExpires()
+      expires: data.refreshTokenExpiresAt || getRefreshTokenExpires()
       // secure: process.env.NODE_ENV === 'production',
     })
   }
 
-  getTokenOptions({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) {
+  getTokenOptions({
+    accessToken,
+    refreshToken,
+    refreshTokenExpiresAt
+  }: {
+    accessToken: string
+    refreshToken: string
+    refreshTokenExpiresAt?: Date
+  }) {
     return {
       accessToken: {
         value: accessToken,
@@ -150,7 +161,7 @@ class AuthServices {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        expires: getRefreshTokenExpires()
+        expires: refreshTokenExpiresAt || getRefreshTokenExpires()
       }
     }
   }
@@ -200,7 +211,7 @@ class AuthServices {
       mongoDB.refreshTokens.deleteOne({ token: refreshToken })
     ])
 
-    return token
+    return { ...token, refreshTokenExpiresAt }
   }
 
   // async verifyEmail(userId: ObjectId) {

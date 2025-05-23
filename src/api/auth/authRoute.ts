@@ -19,14 +19,14 @@ router.post('/login', authMiddlewares.login, reqHandler(authControllers.login))
 
 /** Logout
  * @route POST /api/auth/logout
- * @cookies { Authorization: Bearer <token>, refresh-token: <token> }
+ * @cookies { Authorization: Bearer <token>, refresh_token: <token> }
  * @body { refreshToken: string }
  */
 router.post('/logout', authMiddlewares.logout, reqHandler(authControllers.logout))
 
 /** Refresh token
- * @route POST /api/auth/refresh-token
- * @cookies { refresh-token: <token> }
+ * @route POST /api/auth/refresh_token
+ * @cookies { refresh_token: <token> }
  */
 router.post(
   '/refresh-token',
