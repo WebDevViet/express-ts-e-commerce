@@ -7,7 +7,7 @@ export interface JsonifyOptions {
   message: string
   status?: KeysHttpStatus | HttpStatus
   errors?: Record<string, string> | null
-  typeError?: `${TypeError}` | null
+  typeError?: keyof typeof TypeError | null
 }
 
 export interface ResponsePayload<T = null> {
@@ -24,10 +24,12 @@ export const jsonify = (_req: Request, res: Response, next: NextFunction): void 
     status = typeof status === 'string' ? HttpStatus[status] : status
     status = typeof status === 'number' && statusList.includes(status) ? status : 200
 
-    // eslint-disable-next-line no-console
-    console.log({ status, data, message, errors, typeError })
+    const typeErrorValue = typeError ? TypeError[typeError] : null
 
-    return res.status(status).json({ data, message, errors, typeError })
+    // eslint-disable-next-line no-console
+    console.log({ status, data, message, errors, typeError: typeErrorValue })
+
+    return res.status(status).json({ data, message, errors, typeError: typeErrorValue })
   }
 
   next()

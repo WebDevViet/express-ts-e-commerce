@@ -13,7 +13,7 @@ type CreateErrorOptions =
        * Name of error
        */
 
-      name?: `${TypeError}`
+      name: keyof typeof TypeError
     }
   | string
 
